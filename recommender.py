@@ -22,9 +22,7 @@ tags = pd.read_csv("data/tags.dat", delimiter='\t')
 users_artists = pd.read_csv("data/user_artists.dat", delimiter='\t')
 users_taggedartists = pd.read_csv("data/user_taggedartists.dat", delimiter='\t')
 
-# Not used
-users_friends = pd.read_csv("data/user_friends.dat", delimiter='\t')
-users_taggedartists_time = pd.read_csv("data/user_taggedartists-timestamps.dat", delimiter='\t')
+
 print(colored("Done.\n", "green"))
 
 

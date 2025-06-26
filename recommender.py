@@ -150,27 +150,33 @@ print(colored("Done.\n", "green"))
 # Same filesize issue here.
 
 # For faster execution of the application, run the code below once to save the user_profiles on the disk,
-#   then comment the code out and uncomment the following command.
-
-# user_profiles = np.load('./data/user_profiles.npy', allow_pickle=True)
-# user_profiles = user_profiles.item()
+#   then switch the flag to True in order to use the saved profiles.
 
 
-# ## BUILD PROFILES ##
-user_profiles = {}
-print(colored("Building user profiles...","yellow") )
-for user_id in tqdm(user_weights.keys()):
-    user_profile = np.zeros(len(tag_ids))
-    for artist_id, weight in user_weights[user_id]['weights'].items():
+use_pretrained = False
 
-        # artist has to be tagged
-        if(artist_id in cb_artist_ids):
-            artist_profile = np.nan_to_num(artists_tags_df.loc[artist_id],0)
-            user_profile += weight.item() * artist_profile
+if use_pretrained:
+    print(colored("Loading saved user profiles...","yellow") )
+    user_profiles = np.load('./data/user_profiles.npy', allow_pickle=True)
+    user_profiles = user_profiles.item()
+else:
 
-    user_profiles[user_id] = user_profile.reshape(1,-1)
-np.save('./data/user_profiles.npy', user_profiles, allow_pickle=True)
-# print(colored("Done.\n", "green"))
+    ## BUILD PROFILES ##
+    user_profiles = {}
+    print(colored("Building user profiles...","yellow") )
+    for user_id in tqdm(user_weights.keys()):
+        user_profile = np.zeros(len(tag_ids))
+        for artist_id, weight in user_weights[user_id]['weights'].items():
+
+            # artist has to be tagged
+            if(artist_id in cb_artist_ids):
+                artist_profile = np.nan_to_num(artists_tags_df.loc[artist_id],0)
+                user_profile += weight.item() * artist_profile
+
+        user_profiles[user_id] = user_profile.reshape(1,-1)
+    np.save('./data/user_profiles.npy', user_profiles, allow_pickle=True)
+
+print(colored("Done.\n", "green"))
 
 
 ########################################################################################################
